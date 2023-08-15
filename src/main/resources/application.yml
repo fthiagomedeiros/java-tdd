@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    username: postgres
+    password: 12345678
+    url: jdbc:postgresql://localhost:5432/CUSTOMER_INFO
+
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+      ddl-auto: validate
+
+
+    properties:
+      hibernate:
+        format_sql: true
+
+
+  flyway:
+    schemas: CUSTOMER_INFO
+    baseline-on-migrate: true
+    enabled: true
