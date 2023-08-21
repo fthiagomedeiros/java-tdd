@@ -38,7 +38,7 @@ public class FullyIntegrationIT {
             new PostgreSQLContainer(DockerImageName.parse("postgres:alpine:3.18"))
                     .withUsername("springboot")
                     .withPassword("springboot")
-                    .withDatabaseName("CUSTOMER_INFO");
+                    .withDatabaseName("customer_info");
 
     @DynamicPropertySource
     static void setDataSourceProperties(DynamicPropertyRegistry registry) {

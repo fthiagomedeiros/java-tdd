@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -66,7 +67,7 @@ public class CustomerRepositoryTest {
 
         //This test in not meaningful once we are testing the framework calling findById
         //(already testes by the framework team)
-        String uuid = saved.getId();
+        UUID uuid = saved.getId();
         Optional<Customer> customers = repository.findById(uuid);
         assertEquals(uuid, customers.get().getId());
     }

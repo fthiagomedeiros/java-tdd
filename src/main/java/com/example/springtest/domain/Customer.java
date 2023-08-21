@@ -1,6 +1,7 @@
 package com.example.springtest.domain;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,18 +13,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
+import org.hibernate.annotations.Type;
+
+import java.util.UUID;
 
 @Entity
-@Table( name = "CUSTOMERS")
+@Table( name = "CUSTOMERS", schema = "customer_info")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
 public class Customer {
+
     @Id
+    @Column(name = "id", columnDefinition = "uuid")
     @GeneratedValue(strategy= GenerationType.UUID)
-    private String id;
+    private UUID id;
+
     private String firstName;
     private String lastName;
     private String username;

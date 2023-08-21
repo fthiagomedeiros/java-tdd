@@ -7,6 +7,8 @@ import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +32,12 @@ public class CustomerService {
     }
 
     public CustomerDTO getCustomer(String id) {
-        Optional<Customer> customer = repository.findById(id);
+        Optional<Customer> customer = repository.findById(UUID.fromString(id));
         return customer.map(value -> customerMapper.mapToCustomerDTO(value)).orElse(null);
     }
 
     public CustomerDTO deleteCustomer(String id) throws CustomerNotFoundException {
-        Optional<Customer> customer = repository.findById(id);
+        Optional<Customer> customer = repository.findById(UUID.fromString(id));
 
         if (customer.isPresent()) {
             Customer deletedCustomer = customer.get();

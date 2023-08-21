@@ -2,7 +2,7 @@ spring:
   datasource:
     username: postgres
     password: 12345678
-    url: jdbc:postgresql://localhost:5432/CUSTOMER_INFO
+    url: jdbc:postgresql://localhost:5432/customer_info
 
   jpa:
     show-sql: true
@@ -12,15 +12,10 @@ spring:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
-      ddl-auto: validate
-
-
-    properties:
-      hibernate:
-        format_sql: true
+      ddl-auto: none
 
 
   flyway:
-    schemas: CUSTOMER_INFO
+    schemas: customer_info
     baseline-on-migrate: true
     enabled: true

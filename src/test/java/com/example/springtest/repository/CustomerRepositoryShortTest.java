@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest( properties = {
         "spring.test.database.replace = NONE",
-        "spring.datasource.url = jdbc:tc:postgresql:15.3-alpine3.18:///springboot:CUSTOMER_INFO"
+        "spring.datasource.url = jdbc:tc:postgresql:15.3-alpine3.18:///springboot:customer_info"
     }
 )
 public class CustomerRepositoryShortTest {

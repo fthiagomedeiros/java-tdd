@@ -22,6 +22,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -61,7 +62,7 @@ public class CreateCustomerIT {
             new PostgreSQLContainer(DockerImageName.parse("postgres:alpine:3.18"))
                     .withUsername("springboot")
                     .withPassword("springboot")
-                    .withDatabaseName("CUSTOMER_INFO");
+                    .withDatabaseName("customer_info");
 
     @DynamicPropertySource
     static void setDataSourceProperties(DynamicPropertyRegistry registry) {
@@ -87,7 +88,7 @@ public class CreateCustomerIT {
 
         String customerCreatedId = Objects.requireNonNull(response.getResponse().getHeader("Location"))
                 .substring(26);
-        Optional<Customer> customerCreated = repository.findById(customerCreatedId);
+        Optional<Customer> customerCreated = repository.findById(UUID.fromString(customerCreatedId));
 
         //Validate customer has been created
         assertTrue(customerCreated.isPresent());
@@ -107,7 +108,7 @@ public class CreateCustomerIT {
 
         Customer customer = mapper.mapToCustomer(body);
         customer = repository.save(customer);
-        String id = customer.getId();
+        UUID id = customer.getId();
 
         //This one was loaded just above
         this.mockMvc.perform(get(CUSTOMER_URL + "/" + id))

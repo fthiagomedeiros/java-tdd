@@ -2,7 +2,7 @@ spring:
   datasource:
     username: springboot
     password: springboot
-    url: jdbc:postgresql://localhost:5432/CUSTOMER_INFO
+    url: jdbc:postgresql://localhost:5432/customer_info
 
   jpa:
     show-sql: true
@@ -18,6 +18,6 @@ spring:
         format_sql: true
 
   flyway:
-    schemas: CUSTOMER_INFO
+    schemas: customer_info
     baseline-on-migrate: true
     enabled: true

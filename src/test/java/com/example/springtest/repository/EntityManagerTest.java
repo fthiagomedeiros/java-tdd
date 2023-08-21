@@ -30,7 +30,7 @@ public class EntityManagerTest {
         uuid = UUID.randomUUID();
 
         entityManager.merge(Customer.builder()
-                .id(uuid.toString())
+                .id(uuid)
                 .firstName("John")
                 .lastName("Doe")
                 .cpf("11111111122")
@@ -45,7 +45,7 @@ public class EntityManagerTest {
     public void findSuccessfullyCustomerById() {
         //This test in not meaningful once we are testing the framework calling findById
         //(already testes by the framework team)
-        Customer customers = entityManager.find(Customer.class, "1");
+        Customer customers = entityManager.find(Customer.class, UUID.fromString("5801fc28-716e-4619-9814-4ef74c7c8898"));
         assertEquals("Francisco", customers.getFirstName());
     }
 
