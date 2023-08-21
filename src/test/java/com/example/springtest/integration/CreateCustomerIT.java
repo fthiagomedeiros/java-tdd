@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class CreateCustomerIT {
 
-    private String CUSTOMER_URL = "/customer";
+    private final String CUSTOMER_URL = "/customer";
 
     @Autowired
     private WebApplicationContext context;
