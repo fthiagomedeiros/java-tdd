@@ -3,8 +3,7 @@
 1. Firstly, run a docker image for MySQL database.
 ```shell
 docker run --name mysql105 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=12345678 -d mysql:latest
-docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=12345678 postgres:latest
-```
+docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=12345678 -e POSTGRES_DB=customer_info postgres:latest```
 
 2. Create the following database structure
 
