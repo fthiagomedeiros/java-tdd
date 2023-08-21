@@ -31,9 +31,11 @@ public class CustomerService {
         return customerMapper.mapToCustomerDTO(saved);
     }
 
-    public CustomerDTO getCustomer(UUID id) {
+    public CustomerDTO getCustomer(UUID id) throws CustomerNotFoundException {
         Optional<Customer> customer = repository.findById(id);
-        return customer.map(value -> customerMapper.mapToCustomerDTO(value)).orElse(null);
+        return customer
+                .map(value -> customerMapper.mapToCustomerDTO(value))
+                .orElseThrow(CustomerNotFoundException::new);
     }
 
     public void deleteCustomer(UUID id) throws CustomerNotFoundException {

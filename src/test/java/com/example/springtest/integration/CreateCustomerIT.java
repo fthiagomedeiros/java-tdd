@@ -128,5 +128,14 @@ public class CreateCustomerIT {
                 .andExpect(jsonPath("$.length()").value(2));
     }
 
+    @Test
+    public void testNotFoundCustomer() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        //This one was loaded just above
+        this.mockMvc.perform(get(CUSTOMER_URL + "/" + id))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 
 }

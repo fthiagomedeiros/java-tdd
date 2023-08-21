@@ -34,7 +34,7 @@ public class CustomerController {
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<CustomerDTO> fetchCustomerById(@PathVariable UUID id) {
+    public ResponseEntity<CustomerDTO> fetchCustomerById(@PathVariable UUID id) throws CustomerNotFoundException {
         CustomerDTO customer = service.getCustomer(id);
         return ResponseEntity.ok().body(customer);
     }
