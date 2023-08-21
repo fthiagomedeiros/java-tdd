@@ -31,18 +31,19 @@ public class CustomerService {
         return customerMapper.mapToCustomerDTO(saved);
     }
 
-    public CustomerDTO getCustomer(String id) {
-        Optional<Customer> customer = repository.findById(UUID.fromString(id));
+    public CustomerDTO getCustomer(UUID id) {
+        Optional<Customer> customer = repository.findById(id);
         return customer.map(value -> customerMapper.mapToCustomerDTO(value)).orElse(null);
     }
 
-    public CustomerDTO deleteCustomer(String id) throws CustomerNotFoundException {
-        Optional<Customer> customer = repository.findById(UUID.fromString(id));
+    public void deleteCustomer(UUID id) throws CustomerNotFoundException {
+        Optional<Customer> customer = repository.findById(id);
 
         if (customer.isPresent()) {
             Customer deletedCustomer = customer.get();
             repository.delete(deletedCustomer);
-            return customerMapper.mapToCustomerDTO(deletedCustomer);
+            customerMapper.mapToCustomerDTO(deletedCustomer);
+            return;
         }
 
         throw new CustomerNotFoundException();

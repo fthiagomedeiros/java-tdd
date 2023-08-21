@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/customer")
@@ -33,13 +34,13 @@ public class CustomerController {
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<CustomerDTO> fetchCustomerById(@PathVariable String id) {
+    public ResponseEntity<CustomerDTO> fetchCustomerById(@PathVariable UUID id) {
         CustomerDTO customer = service.getCustomer(id);
         return ResponseEntity.ok().body(customer);
     }
 
     @DeleteMapping({"{id}"})
-    public ResponseEntity<CustomerDTO> deleteCustomer(@PathVariable String id) throws CustomerNotFoundException {
+    public ResponseEntity<CustomerDTO> deleteCustomer(@PathVariable UUID id) throws CustomerNotFoundException {
         service.deleteCustomer(id);
         return ResponseEntity.noContent().build();
     }

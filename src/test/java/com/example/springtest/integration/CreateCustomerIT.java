@@ -126,8 +126,6 @@ public class CreateCustomerIT {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
-
-        System.out.println("End Test");
     }
 
 
