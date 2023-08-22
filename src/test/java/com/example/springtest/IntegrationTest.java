@@ -1,4 +1,4 @@
-package com.example.springtest.integration;
+package com.example.springtest;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 

@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest(properties = {
         "spring.test.database.replace = NONE",
         "spring.datasource.url = jdbc:tc:postgresql:15.3-alpine3.18:///springboot:CUSTOMER_INFO"
-}
-)
+})
 public class EntityManagerTest {
 
     @Autowired

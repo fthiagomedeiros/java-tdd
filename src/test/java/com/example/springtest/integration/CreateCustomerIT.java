@@ -1,5 +1,6 @@
 package com.example.springtest.integration;
 
+import com.example.springtest.IntegrationTest;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.mapper.CustomerMapper;
