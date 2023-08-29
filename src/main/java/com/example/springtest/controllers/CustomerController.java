@@ -1,6 +1,7 @@
 package com.example.springtest.controllers;
 
 import com.example.springtest.domain.CustomerDTO;
+import com.example.springtest.exceptions.CpfExistsException;
 import com.example.springtest.exceptions.CustomerNotFoundException;
 import com.example.springtest.services.CustomerService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO mCustomer,
-        UriComponentsBuilder uriComponentsBuilder) {
+        UriComponentsBuilder uriComponentsBuilder) throws CpfExistsException {
         CustomerDTO customer = service.createCustomer(mCustomer);
         return ResponseEntity.created(uriComponentsBuilder.path("/customer/{customerId}")
             .build(customer.getId())).build();

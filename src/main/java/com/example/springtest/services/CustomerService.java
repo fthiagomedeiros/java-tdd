@@ -2,15 +2,16 @@ package com.example.springtest.services;
 
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
+import com.example.springtest.exceptions.CpfExistsException;
 import com.example.springtest.exceptions.CustomerNotFoundException;
 import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.repository.CustomerRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
@@ -25,9 +26,15 @@ public class CustomerService {
         return customerMapper.toCustomerDtoList(customers);
     }
 
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) {
+    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws CpfExistsException {
         Customer customer = customerMapper.mapToCustomer(customerDTO);
-        Customer saved = repository.save(customer);
+
+        Customer hasCustomer = repository.findByCpfOrUsername(customerDTO.getCpf(), customerDTO.getUsername());
+        if (hasCustomer != null) {
+            throw new CpfExistsException();
+        }
+
+        Customer saved = repository.saveAndFlush(customer);
         return customerMapper.mapToCustomerDTO(saved);
     }
 

@@ -99,6 +99,30 @@ public class CreateCustomerIT {
 
     @Test
     @Transactional
+    public void testCreateCustomerWithSameCpf() throws Exception {
+        CustomerDTO body = CustomerDTO.builder()
+                .username("fmedeiros")
+                .firstName("Francisco")
+                .lastName("Medeiros")
+                .cpf("99999999911")
+                .build();
+
+        Customer customer = mapper.mapToCustomer(body);
+        customer = repository.save(customer);
+        UUID id = customer.getId();
+
+        Customer customerWithCpf = repository.findByCpfOrUsername(body.getCpf(), "fmedeiros2");
+
+        //This is calling two endpoints
+        this.mockMvc.perform(post(CUSTOMER_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body.toString()))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+
+    @Test
+    @Transactional
     public void testFetchCustomerSuccessfully() throws Exception {
         CustomerDTO body = CustomerDTO.builder()
                 .username("fmedeiros")

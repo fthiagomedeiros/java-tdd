@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "customer_info".CUSTOMERS (
     FIRST_NAME        VARCHAR(256),
     LAST_NAME         VARCHAR(256),
     USERNAME          VARCHAR(256),
-    CPF               VARCHAR(11)
+    CPF               VARCHAR(11)       UNIQUE
     );
 
 --KEYS
