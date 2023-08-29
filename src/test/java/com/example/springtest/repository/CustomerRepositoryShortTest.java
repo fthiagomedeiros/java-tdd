@@ -42,4 +42,11 @@ public class CustomerRepositoryShortTest {
         List<Customer> customer = repository.findByFirstNameIn(List.of("Joao"));
         assertEquals(0, customer.size());
     }
+
+    @Test
+    @Sql("/scripts/CREATE_CUSTOMER.sql")
+    public void findSuccessfullySeveralCustomersByFirstName() {
+        List<Customer> customer = repository.findByFirstNameIn(List.of("Francisco", "Alexandre"));
+        assertEquals(2, customer.size());
+    }
 }
