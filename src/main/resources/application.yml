@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: postgres
-    password: 12345678
+    username: springboot
+    password: springboot
     url: jdbc:postgresql://localhost:5432/customer_info
 
   jpa:
@@ -12,7 +12,7 @@ spring:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
-      ddl-auto: none
+      ddl-auto: validate
 
 
   flyway:
