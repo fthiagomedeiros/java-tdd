@@ -14,8 +14,15 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
       ddl-auto: validate
 
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
   flyway:
     schemas: customer_info
     baseline-on-migrate: true
     enabled: true
+
+custom:
+  name: Ambiente de Desenvolvimento

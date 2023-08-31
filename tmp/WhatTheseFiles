@@ -1,0 +1,5 @@
+The two ‘-realm.json’ files contain the configuration for Keycloak. This includes the OAuth 2 client(s) as well as all users that can log in. As our Keycloak Docker container is not initialized when we start it, we use this files to configure it automatically.
+
+The sqs-queue-definition.conf file contains the AWS queue definition(s). We describe which queues are available and should be initialized upon starting the container.
+
+We Docker, we usually get fresh and “empty” containers and hence have to initialize them properly.

@@ -1,13 +1,19 @@
 package com.example.springtest.controllers;
 
+import com.example.springtest.config.CustomProperties;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.exceptions.CpfExistsException;
 import com.example.springtest.exceptions.CustomerNotFoundException;
 import com.example.springtest.services.CustomerService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -15,10 +21,16 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/customer")
-@AllArgsConstructor
 public class CustomerController {
 
     private CustomerService service;
+
+    private CustomProperties properties;
+
+    public CustomerController(CustomerService service, CustomProperties properties) {
+        this.service = service;
+        this.properties = properties;
+    }
 
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> fetchAllCustomers() {
