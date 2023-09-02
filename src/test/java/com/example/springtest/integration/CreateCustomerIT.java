@@ -21,6 +21,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CreateCustomerIT {
 
     private final String CUSTOMER_URL = "/customer";
+    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     @Autowired
     private WebApplicationContext context;
@@ -78,6 +81,8 @@ public class CreateCustomerIT {
                 .firstName("John")
                 .lastName("Doe")
                 .cpf("00011122233")
+                .fullName("John Doe da Silva")
+                .birth(LocalDateTime.parse("23/02/1985 10:00", FORMATTER))
                 .build();
 
         //This is calling two endpoints
@@ -95,6 +100,7 @@ public class CreateCustomerIT {
         assertTrue(customerCreated.isPresent());
         assertEquals("johndoe1994", customerCreated.get().getUsername());
         assertEquals("John", customerCreated.get().getFirstName());
+        assertEquals(LocalDateTime.parse("23/02/1985 10:00", FORMATTER), customerCreated.get().getBirth());
     }
 
     @Test
@@ -105,13 +111,15 @@ public class CreateCustomerIT {
                 .firstName("Francisco")
                 .lastName("Medeiros")
                 .cpf("99999999911")
+                .fullName("Francisco Medeiros da Silva")
+                .birth(LocalDateTime.parse("23/02/1985 10:22", FORMATTER))
                 .build();
 
         Customer customer = mapper.mapToCustomer(body);
         customer = repository.save(customer);
         UUID id = customer.getId();
 
-        Customer customerWithCpf = repository.findByCpfOrUsername(body.getCpf(), "fmedeiros2");
+        Customer customerWithCpf = repository.findByCpfOrUsername(body.getCpf(), body.getUsername());
 
         //This is calling two endpoints
         this.mockMvc.perform(post(CUSTOMER_URL)
@@ -129,6 +137,8 @@ public class CreateCustomerIT {
                 .firstName("Francisco")
                 .lastName("Medeiros")
                 .cpf("99999999911")
+                .fullName("Francisco Medeiros da Silva")
+                .birth(LocalDateTime.parse("23/02/1985 10:22", FORMATTER))
                 .build();
 
         Customer customer = mapper.mapToCustomer(body);

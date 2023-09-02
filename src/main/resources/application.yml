@@ -26,3 +26,10 @@ spring:
 
 custom:
   name: Ambiente de Desenvolvimento
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  show-actuator: true
+  api-docs:
+    path: /api-docs
