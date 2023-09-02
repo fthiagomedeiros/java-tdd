@@ -6,13 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/health")
 public class HealthController {
 
     @GetMapping
     public ResponseEntity<HealthStatus> getHealth() {
-        HealthStatus status = new HealthStatus("UP");
+        HealthStatus status = new HealthStatus("UP", LocalDateTime.now());
         return ResponseEntity
                 .ok()
                 .body(status);
