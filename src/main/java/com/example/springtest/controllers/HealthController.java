@@ -1,5 +1,6 @@
 package com.example.springtest.controllers;
 
+import com.example.springtest.domain.HealthStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
     @GetMapping
-    public ResponseEntity<String> getHealth() {
+    public ResponseEntity<HealthStatus> getHealth() {
+        HealthStatus status = new HealthStatus("UP");
         return ResponseEntity
                 .ok()
-                .body("{'status': 'up'}");
+                .body(status);
     }
 
 }

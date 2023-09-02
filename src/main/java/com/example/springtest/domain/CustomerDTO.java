@@ -1,6 +1,9 @@
 package com.example.springtest.domain;
 
-import com.google.gson.Gson;
+import com.example.springtest.json.adapter.LocalDateTimeDeserializer;
+import com.example.springtest.json.adapter.LocalDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.gson.GsonBuilder;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -31,8 +35,39 @@ public class CustomerDTO {
     @Size(min = 11, max = 11)
     private String cpf;
 
+    private String fullName;
+
+    /** using this annotation JsonFormat we inform the format of the LocalDateTime passed as parameter
+     * It means the first payload will be accepted, but the second one will not
+     *
+     * {
+     *   "firstName": "Francisco",
+     *   "lastName": "Medeiros",
+     *   "username": "fmedeiro00",
+     *   "cpf": "33525666811",
+     *   "fullName": "Francisco Thiago",
+     *   "birth": "23/02/1985 11:11"
+     * }
+     *
+     * {
+     *   "firstName": "Joao",
+     *   "lastName": "Medeiros",
+     *   "username": "fmedeiro01",
+     *   "cpf": "99999999900",
+     *   "fullName": "Jaao Medeiros",
+     *   "birth": "23/02/1983" << missing HH:mm
+     * }
+     *
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime birth;
+
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
+                .create()
+                .toJson(this);
     }
 }

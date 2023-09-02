@@ -26,3 +26,9 @@ spring:
 
 custom:
   name: Ambiente de Testes
+
+#http://localhost:8080/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  show-actuator: true
