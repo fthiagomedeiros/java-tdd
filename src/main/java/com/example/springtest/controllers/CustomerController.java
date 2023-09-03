@@ -25,11 +25,8 @@ public class CustomerController {
 
     private CustomerService service;
 
-    private CustomProperties properties;
-
     public CustomerController(CustomerService service, CustomProperties properties) {
         this.service = service;
-        this.properties = properties;
     }
 
     @GetMapping
