@@ -1,10 +1,15 @@
 package com.example.springtest.integration;
 
 import com.example.springtest.IntegrationTest;
+import com.example.springtest.controllers.CustomerController;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.repository.CustomerRepository;
+import jakarta.persistence.EntityManager;
+import java.util.List;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -171,6 +177,26 @@ public class CreateCustomerIT {
         this.mockMvc.perform(get(CUSTOMER_URL + "/" + id))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @Sql("/scripts/CREATE_CUSTOMER.sql")
+    public void contextLoads() {
+        assertNotNull(context);
+        String[] definitions = context.getBeanDefinitionNames();
+        CustomerController customerController = (CustomerController) context.getBean("customerController");
+        CustomerRepository customerRepository = (CustomerRepository) context.getBean("customerRepository");
+        customerRepository.findAll();
+
+        DataSource dataSource = context.getBean(DataSource.class);
+        EntityManager manager = context.getBean(EntityManager.class);
+
+        List<?> q = manager.createQuery("SELECT c FROM Customer c")
+            .getResultList();
+
+        //2 items has been found.
+        Assertions.assertEquals(2, q.size());
     }
 
 }
