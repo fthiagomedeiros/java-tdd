@@ -3,7 +3,6 @@ package com.example.springtest.integration;
 import com.example.springtest.IntegrationTest;
 import com.example.springtest.PostgresContainer;
 import com.example.springtest.controllers.CustomerController;
-import com.example.springtest.domain.Customer;
 import com.example.springtest.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
@@ -35,8 +34,8 @@ public class SpringContextTest extends PostgresContainer {
         DataSource dataSource = context.getBean(DataSource.class);
         EntityManager manager = context.getBean(EntityManager.class);
 
-        List<?> q = manager.createQuery("SELECT c FROM Customer c").getResultList();
-        System.out.println(q);
+        List<?> q = manager.createQuery("SELECT c FROM Customer c")
+                .getResultList();
 
         //2 items has been found.
         Assertions.assertEquals(2, q.size());
