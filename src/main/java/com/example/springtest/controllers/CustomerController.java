@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequestMapping("/customer")
 public class CustomerController {
 
-  private CustomerService service;
+  private final CustomerService service;
 
   public CustomerController(CustomerService service, CustomProperties properties) {
     this.service = service;
