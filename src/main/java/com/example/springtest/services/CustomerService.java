@@ -17,44 +17,45 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CustomerService {
 
-    private CustomerRepository repository;
+  private CustomerRepository repository;
 
-    private CustomerMapper customerMapper;
+  private CustomerMapper customerMapper;
 
-    public List<CustomerDTO> getAllCustomers() {
-        List<Customer> customers = repository.findAll();
-        return customerMapper.toCustomerDtoList(customers);
+  public List<CustomerDTO> getAllCustomers() {
+    List<Customer> customers = repository.findAll();
+    return customerMapper.toCustomerDtoList(customers);
+  }
+
+  public CustomerDTO createCustomer(CustomerDTO customerDTO) throws CpfExistsException {
+    Customer customer = customerMapper.mapToCustomer(customerDTO);
+
+    Customer hasCustomer = repository.findByCpfOrUsername(customerDTO.getCpf(),
+        customerDTO.getUsername());
+    if (hasCustomer != null) {
+      throw new CpfExistsException();
     }
 
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws CpfExistsException {
-        Customer customer = customerMapper.mapToCustomer(customerDTO);
+    Customer saved = repository.saveAndFlush(customer);
+    return customerMapper.mapToCustomerDTO(saved);
+  }
 
-        Customer hasCustomer = repository.findByCpfOrUsername(customerDTO.getCpf(), customerDTO.getUsername());
-        if (hasCustomer != null) {
-            throw new CpfExistsException();
-        }
+  public CustomerDTO getCustomer(UUID id) throws CustomerNotFoundException {
+    Optional<Customer> customer = repository.findById(id);
+    return customer
+        .map(value -> customerMapper.mapToCustomerDTO(value))
+        .orElseThrow(CustomerNotFoundException::new);
+  }
 
-        Customer saved = repository.saveAndFlush(customer);
-        return customerMapper.mapToCustomerDTO(saved);
+  public void deleteCustomer(UUID id) throws CustomerNotFoundException {
+    Optional<Customer> customer = repository.findById(id);
+
+    if (customer.isPresent()) {
+      Customer deletedCustomer = customer.get();
+      repository.delete(deletedCustomer);
+      customerMapper.mapToCustomerDTO(deletedCustomer);
+      return;
     }
 
-    public CustomerDTO getCustomer(UUID id) throws CustomerNotFoundException {
-        Optional<Customer> customer = repository.findById(id);
-        return customer
-                .map(value -> customerMapper.mapToCustomerDTO(value))
-                .orElseThrow(CustomerNotFoundException::new);
-    }
-
-    public void deleteCustomer(UUID id) throws CustomerNotFoundException {
-        Optional<Customer> customer = repository.findById(id);
-
-        if (customer.isPresent()) {
-            Customer deletedCustomer = customer.get();
-            repository.delete(deletedCustomer);
-            customerMapper.mapToCustomerDTO(deletedCustomer);
-            return;
-        }
-
-        throw new CustomerNotFoundException();
-    }
+    throw new CustomerNotFoundException();
+  }
 }

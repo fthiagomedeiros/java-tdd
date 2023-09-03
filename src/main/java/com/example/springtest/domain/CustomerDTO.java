@@ -22,52 +22,41 @@ import java.util.UUID;
 @Setter
 @Builder
 public class CustomerDTO {
-    private UUID id;
-    private String firstName;
-    private String lastName;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 8, max = 100)
-    private String username;
+  private UUID id;
+  private String firstName;
+  private String lastName;
 
-    @NotBlank
-    @Size(min = 11, max = 11)
-    private String cpf;
+  @NotBlank
+  @NotNull
+  @Size(min = 8, max = 100)
+  private String username;
 
-    private String fullName;
+  @NotBlank
+  @Size(min = 11, max = 11)
+  private String cpf;
 
-    /** using this annotation JsonFormat we inform the format of the LocalDateTime passed as parameter
-     * It means the first payload will be accepted, but the second one will not
-     *
-     * {
-     *   "firstName": "Francisco",
-     *   "lastName": "Medeiros",
-     *   "username": "fmedeiro00",
-     *   "cpf": "33525666811",
-     *   "fullName": "Francisco Thiago",
-     *   "birth": "23/02/1985 11:11"
-     * }
-     *
-     * {
-     *   "firstName": "Joao",
-     *   "lastName": "Medeiros",
-     *   "username": "fmedeiro01",
-     *   "cpf": "99999999900",
-     *   "fullName": "Jaao Medeiros",
-     *   "birth": "23/02/1983" << missing HH:mm
-     * }
-     *
-     */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime birth;
+  private String fullName;
 
-    @Override
-    public String toString() {
-        return new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
-                .create()
-                .toJson(this);
-    }
+  /**
+   * using this annotation JsonFormat we inform the format of the LocalDateTime passed as parameter
+   * It means the first payload will be accepted, but the second one will not
+   * <p>
+   * { "firstName": "Francisco", "lastName": "Medeiros", "username": "fmedeiro00", "cpf":
+   * "33525666811", "fullName": "Francisco Thiago", "birth": "23/02/1985 11:11" }
+   * <p>
+   * { "firstName": "Joao", "lastName": "Medeiros", "username": "fmedeiro01", "cpf": "99999999900",
+   * "fullName": "Jaao Medeiros", "birth": "23/02/1983" << missing HH:mm }
+   */
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+  private LocalDateTime birth;
+
+  @Override
+  public String toString() {
+    return new GsonBuilder()
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
+        .create()
+        .toJson(this);
+  }
 }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table( name = "CUSTOMERS", schema = "customer_info")
+@Table(name = "CUSTOMERS", schema = "customer_info")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -26,19 +26,19 @@ import java.util.UUID;
 @Builder
 public class Customer {
 
-    @Id
-    @Column(name = "id", columnDefinition = "uuid")
-    @GeneratedValue(strategy= GenerationType.UUID)
-    private UUID id;
+  @Id
+  @Column(name = "id", columnDefinition = "uuid")
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    private String firstName;
-    private String lastName;
-    private String username;
+  private String firstName;
+  private String lastName;
+  private String username;
 
-    @Size(min = 11, max = 11)
-    private String cpf;
+  @Size(min = 11, max = 11)
+  private String cpf;
 
-    private String fullName;
+  private String fullName;
 
-    private LocalDateTime birth;
+  private LocalDateTime birth;
 }

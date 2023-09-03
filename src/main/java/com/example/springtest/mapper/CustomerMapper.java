@@ -7,10 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
-
-    CustomerDTO mapToCustomerDTO(Customer customer);
-
-    Customer mapToCustomer(CustomerDTO customerDTO);
-
-    List<CustomerDTO> toCustomerDtoList(List<Customer> customers);
+  CustomerDTO mapToCustomerDTO(Customer customer);
+  Customer mapToCustomer(CustomerDTO customerDTO);
+  List<CustomerDTO> toCustomerDtoList(List<Customer> customers);
 }

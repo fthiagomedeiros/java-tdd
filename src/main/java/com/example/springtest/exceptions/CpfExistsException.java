@@ -9,5 +9,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Setter
 @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY, reason = "CPF cannot be used")
 public class CpfExistsException extends RuntimeException {
-    private String errorMessage = "CPF is invalid";
+
+  private String errorMessage = "CPF is invalid";
 }

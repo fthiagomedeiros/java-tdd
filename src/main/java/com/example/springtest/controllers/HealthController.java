@@ -12,12 +12,16 @@ import java.time.LocalDateTime;
 @RequestMapping("/health")
 public class HealthController {
 
-    @GetMapping
-    public ResponseEntity<HealthStatus> getHealth() {
-        HealthStatus status = new HealthStatus("UP", LocalDateTime.now());
-        return ResponseEntity
-                .ok()
-                .body(status);
-    }
+  @GetMapping
+  public ResponseEntity<HealthStatus> getHealth() {
+    HealthStatus status = HealthStatus.builder()
+        .status("UP")
+        .hour(LocalDateTime.now())
+        .build();
+
+    return ResponseEntity
+        .ok()
+        .body(status);
+  }
 
 }
