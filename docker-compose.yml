@@ -5,6 +5,7 @@ services:
     environment:
       - POSTGRES_USER=springboot
       - POSTGRES_PASSWORD=springboot
+      - POSTGRES_DB=customer_info
     ports:
       - "5432:5432"
   keycloak:

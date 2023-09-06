@@ -40,7 +40,7 @@ public class CustomerDTO {
 
   /**
    * using this annotation JsonFormat we inform the format of the LocalDateTime passed as parameter
-   * It means the first payload will be accepted, but the second one will not
+   * It means the first payload would be accepted, but the second one would not
    * <p>
    * { "firstName": "Francisco", "lastName": "Medeiros", "username": "fmedeiro00", "cpf":
    * "33525666811", "fullName": "Francisco Thiago", "birth": "23/02/1985 11:11" }

@@ -25,7 +25,8 @@ spring:
     enabled: true
 
 custom:
-  name: Ambiente de Desenvolvimento
+  name: PROD Environment
+
 
 springdoc:
   swagger-ui:
@@ -33,3 +34,7 @@ springdoc:
   show-actuator: true
   api-docs:
     path: /api-docs
+
+logging:
+  file:
+    path: /home/tst/log

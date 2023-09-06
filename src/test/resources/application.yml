@@ -25,10 +25,14 @@ spring:
     enabled: true
 
 custom:
-  name: Ambiente de Testes
+  name: TST Environment
 
 #http://localhost:8080/swagger-ui.html
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
   show-actuator: true
+
+logging:
+  file:
+    path: /home/prod/log
