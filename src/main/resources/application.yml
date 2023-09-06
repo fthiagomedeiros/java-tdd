@@ -37,4 +37,4 @@ springdoc:
 
 logging:
   file:
-    path: /home/tst/log
+    path: ./prod
