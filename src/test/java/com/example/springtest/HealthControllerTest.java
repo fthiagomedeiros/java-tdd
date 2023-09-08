@@ -50,6 +50,7 @@ public class HealthControllerTest {
                 .perform(get(HEALTH_URL)
                         /*.with(user(USER).password(PASS))*/)
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("environment", Matchers.is("TST")))
                 .andExpect(jsonPath("status", Matchers.is("UP")));
     }
 }
