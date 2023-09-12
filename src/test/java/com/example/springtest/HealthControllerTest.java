@@ -1,7 +1,7 @@
 package com.example.springtest;
 
 import com.example.springtest.controllers.HealthController;
-//import com.example.springtest.security.WebSecurityConfig;
+//import com.example.springiest.security.WebSecurityConfig;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
