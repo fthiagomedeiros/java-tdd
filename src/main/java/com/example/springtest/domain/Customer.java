@@ -1,6 +1,9 @@
 package com.example.springtest.domain;
 
 
+import com.example.springtest.json.adapter.LocalDateTimeDeserializer;
+import com.example.springtest.json.adapter.LocalDateTimeSerializer;
+import com.google.gson.GsonBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,4 +44,13 @@ public class Customer {
   private String fullName;
 
   private LocalDateTime birth;
+
+  @Override
+  public String toString() {
+    return new GsonBuilder()
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
+        .create()
+        .toJson(this);
+  }
 }
