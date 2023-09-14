@@ -6,12 +6,11 @@ import com.example.springtest.exceptions.CpfExistsException;
 import com.example.springtest.exceptions.CustomerNotFoundException;
 import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.repository.CustomerRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
