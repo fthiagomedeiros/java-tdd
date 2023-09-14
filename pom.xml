@@ -25,6 +25,7 @@
         <webapi.version>2.2.0</webapi.version>
         <gson.version>2.10.1</gson.version>
         <mockito.version>5.5.0</mockito.version>
+        <junit-jupiter.version>5.10.0</junit-jupiter.version>
     </properties>
 
     <dependencies>
