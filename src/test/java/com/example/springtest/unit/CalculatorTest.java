@@ -18,4 +18,9 @@ public class CalculatorTest {
     Assertions.assertEquals(1, 1);
   }
 
+  @Test
+  public void testTimes() {
+    Assertions.assertEquals(1*2, 2);
+  }
+
 }
