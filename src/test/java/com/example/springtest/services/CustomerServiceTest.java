@@ -1,5 +1,6 @@
 package com.example.springtest.services;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -58,7 +59,8 @@ public class CustomerServiceTest {
 
     //Fetch all customers
     List<CustomerDTO> items = customerService.getAllCustomers();
-    assertEquals(1, items.size());
+    assertThat(items.size()).isEqualTo(1);
+    assertThat(items.size()).isNotNull();
 
     //Check number of invocations
     verify(repository, times(1)).findAll();
