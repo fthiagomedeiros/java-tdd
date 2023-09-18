@@ -5,6 +5,7 @@ import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.extension.ParameterCustomerResolverExtension;
 import com.example.springtest.extension.ParameterCustomerResolverExtension.RandomCustomer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,9 @@ public class EntityManagerTest {
     }
 
 
-    @Test
+    @RepeatedTest(value = 10)
     public void testJUnitExtension(@RandomCustomer CustomerDTO customer) {
+        System.out.println(customer);
         assertNotNull(customer);
     }
 
