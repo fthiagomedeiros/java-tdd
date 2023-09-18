@@ -27,23 +27,6 @@ public class EntityManagerTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    UUID uuid = UUID.randomUUID();
-
-    @BeforeEach
-    public void createEntities() {
-        uuid = UUID.randomUUID();
-
-        entityManager.merge(Customer.builder()
-                .id(uuid)
-                .firstName("John")
-                .lastName("Doe")
-                .cpf("11111111122")
-                .username("johndoe")
-                .build());
-        entityManager.getEntityManager().getTransaction().commit();
-
-    }
-
     @Test
     @Sql("/scripts/CREATE_CUSTOMER.sql")
     public void findSuccessfullyCustomerById() {
