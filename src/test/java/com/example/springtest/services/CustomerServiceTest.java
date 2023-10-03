@@ -1,6 +1,8 @@
 package com.example.springtest.services;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,9 +12,11 @@ import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.extension.MapStructsResolver;
 import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.repository.CustomerRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.Setter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,45 +30,60 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith({MapStructsResolver.class, MockitoExtension.class})
 public class CustomerServiceTest {
 
-  @Mock
-  private CustomerRepository repository;
+    @Mock
+    private CustomerRepository repository;
 
-  private CustomerMapper mapper;
+    private CustomerMapper mapper;
 
-  @InjectMocks
-  private CustomerService cut;
+    @InjectMocks
+    private CustomerService cut;
 
-  private Customer customer;
+    private Customer customer;
 
-  @BeforeEach
-  public void setUp() {
-    //work around to inject the mapper a service dependencies
-    cut = new CustomerService(repository, mapper);
-    customer = Customer.builder()
-        .id(UUID.randomUUID())
-        .firstName("Francisco")
-        .lastName("Medeiros")
-        .username("fmedeiros")
-        .cpf("11111111111")
-        .fullName("Francisco Silva Medeiros")
-        .birth(LocalDateTime.of(1985, 2, 23, 0, 1))
-        .build();
-  }
+    @BeforeEach
+    public void setUp() {
+        //work around to inject the mapper a service dependencies
+        cut = new CustomerService(repository, mapper);
+        customer = Customer.builder()
+                .id(UUID.randomUUID())
+                .firstName("Francisco")
+                .lastName("Medeiros")
+                .username("fmedeiros")
+                .cpf("11111111111")
+                .fullName("Francisco Silva Medeiros")
+                .birth(LocalDateTime.of(1985, 2, 23, 0, 1))
+                .build();
+    }
 
-  @DisplayName("Testing for the entity customer and extensions")
-  @Test
-  void firstTestValidation() {
-    //In fact there is no reason to test this method, once all this code is generated automatically
-    //by MapStructs and mocking the response from JpaRepository
-    when(repository.findAll()).thenReturn(List.of(customer));
+    @DisplayName("Testing for the entity customer and extensions")
+    @Test
+    void firstTestValidation() {
+        //In fact there is no reason to test this method, once all this code is generated automatically
+        //by MapStructs and mocking the response from JpaRepository
+        when(repository.findAll()).thenReturn(List.of(customer));
 
-    //Fetch all customers
-    List<CustomerDTO> items = cut.getAllCustomers();
-    assertThat(items.size()).isEqualTo(1);
-    assertThat(items.size()).isNotNull();
+        //Fetch all customers
+        List<CustomerDTO> items = cut.getAllCustomers();
+        assertThat(items.size()).isEqualTo(1);
+        assertThat(items.size()).isNotNull();
 
-    //Check number of invocations
-    verify(repository, times(1)).findAll();
-  }
+        //Check number of invocations
+        verify(repository, times(1)).findAll();
+    }
 
+    @Test
+    public void createCustomer() {
+        UUID id = UUID.randomUUID();
+        CustomerDTO customerDto = mapper.mapToCustomerDTO(customer);
+
+        when(repository.findByCpfOrUsername(any(), any())).thenReturn(null);
+        when(repository.saveAndFlush(any())).then(invocation -> {
+            Customer c = invocation.getArgument(0);
+            c.setId(id);
+            return c;
+        });
+
+        CustomerDTO customerCreated = cut.createCustomer(customerDto);
+        assertEquals(id, customerCreated.getId());
+    }
 }
