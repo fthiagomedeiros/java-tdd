@@ -4,6 +4,9 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.anyOf;
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class JsonPathTest {
 
     @Test
@@ -13,5 +16,9 @@ public class JsonPathTest {
 
         Assertions.assertEquals(15,
                 JsonPath.parse(response).read("$.items.sum()", Long.class));
+
+        assertThat(JsonPath.parse(response).read("$.items.sum()", Long.class))
+                .isEqualTo(15)
+                .isPositive();
     }
 }
