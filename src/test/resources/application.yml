@@ -45,3 +45,6 @@ logging:
       max-file-size: 1MB
       file-name-pattern: ${LOG_FILE}-t.%d{yyyy-MM-dd}.%i-%d{HH}h.gz
 
+server:
+  error:
+    include-message: always
