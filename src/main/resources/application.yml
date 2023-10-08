@@ -44,3 +44,8 @@ logging:
     rollingpolicy:
       max-file-size: 2MB
       file-name-pattern: ${LOG_FILE}-p.%d{yyyy-MM-dd}.%i-%d{HH}h.gz
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
