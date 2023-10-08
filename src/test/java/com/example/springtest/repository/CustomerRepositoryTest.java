@@ -78,4 +78,28 @@ public class CustomerRepositoryTest extends PostgresContainer {
         List<Customer> customer = repository.findByFirstNameIn(List.of("Francisco"));
         assertEquals(1, customer.size());
     }
+
+    @Test
+    public void findSuccessfullyCustomersByFirstNameNativeQuery() {
+        Customer c1 = repository
+                .save(Customer
+                        .builder()
+                        .firstName("Francisco")
+                        .lastName("Medeiros")
+                        .username("fthiagomedeiros")
+                        .cpf("00000000001")
+                        .build());
+
+        Customer c2 = repository
+                .save(Customer
+                        .builder()
+                        .firstName("Alexandre")
+                        .lastName("Medeiros")
+                        .username("alexmedeiros")
+                        .cpf("00000000002")
+                        .build());
+
+        List<Customer> customer = repository.findByFirstNameInNative(List.of("Alexandre"));
+        assertEquals(1, customer.size());
+    }
 }

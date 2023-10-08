@@ -14,5 +14,8 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
   @Query("SELECT c FROM Customer c WHERE c.firstName IN (:names)")
   List<Customer> findByFirstNameIn(List<String> names);
 
+  @Query(value = "SELECT * FROM customer_info.Customers c WHERE c.FIRST_NAME IN (:names)", nativeQuery = true)
+  List<Customer> findByFirstNameInNative(List<String> names);
+
   Customer findByCpfOrUsername(String cpf, String username);
 }
