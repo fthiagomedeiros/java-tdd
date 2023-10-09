@@ -18,4 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
   List<Customer> findByFirstNameInNative(List<String> names);
 
   Customer findByCpfOrUsername(String cpf, String username);
+
+  @Query(value = "SELECT count(*) FROM customer_info.Customers", nativeQuery = true)
+  long count();
 }

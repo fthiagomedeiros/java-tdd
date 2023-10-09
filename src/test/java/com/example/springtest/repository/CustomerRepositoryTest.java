@@ -102,4 +102,5 @@ public class CustomerRepositoryTest extends PostgresContainer {
         List<Customer> customer = repository.findByFirstNameInNative(List.of("Alexandre"));
         assertEquals(1, customer.size());
     }
+
 }

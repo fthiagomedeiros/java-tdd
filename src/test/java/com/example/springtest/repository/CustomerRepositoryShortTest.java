@@ -10,10 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DataJpaTest( properties = {
+@DataJpaTest(properties = {
         "spring.test.database.replace = NONE",
         "spring.datasource.url = jdbc:tc:postgresql:15.3-alpine3.18:///springboot:customer_info"
-    }
+}
 )
 public class CustomerRepositoryShortTest {
 
@@ -48,5 +48,12 @@ public class CustomerRepositoryShortTest {
     public void findSuccessfullySeveralCustomersByFirstName() {
         List<Customer> customer = repository.findByFirstNameIn(List.of("Francisco", "Alexandre"));
         assertEquals(2, customer.size());
+    }
+
+    @Test
+    @Sql("/scripts/CREATE_CUSTOMER.sql")
+    public void countCustomers() {
+        long quantityCustomers = repository.count();
+        assertEquals(2, quantityCustomers);
     }
 }
