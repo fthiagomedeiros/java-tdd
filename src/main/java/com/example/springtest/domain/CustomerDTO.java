@@ -40,13 +40,13 @@ public class CustomerDTO {
 
   /**
    * using this annotation JsonFormat we inform the format of the LocalDateTime passed as parameter
-   * It means the first payload would be accepted, but the second one would not
+   * It means the first payload would be accepted, but the second one wouldn't
    * <p>
    * { "firstName": "Francisco", "lastName": "Medeiros", "username": "fmedeiro00", "cpf":
    * "33525666811", "fullName": "Francisco Thiago", "birth": "23/02/1985 11:11" }
    * <p>
    * { "firstName": "Joao", "lastName": "Medeiros", "username": "fmedeiro01", "cpf": "99999999900",
-   * "fullName": "Jaao Medeiros", "birth": "23/02/1983" << missing HH:mm }
+   * "fullName": "Joao Medeiros", "birth": "23/02/1983" << missing HH:mm }
    */
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
   private LocalDateTime birth;

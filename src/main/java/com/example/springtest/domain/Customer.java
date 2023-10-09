@@ -3,6 +3,7 @@ package com.example.springtest.domain;
 
 import com.example.springtest.json.adapter.LocalDateTimeDeserializer;
 import com.example.springtest.json.adapter.LocalDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.GsonBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,6 +32,7 @@ import java.util.UUID;
 public class Customer {
 
   @Id
+  @JsonIgnore
   @Column(name = "id", columnDefinition = "uuid")
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -38,6 +41,7 @@ public class Customer {
   private String lastName;
   private String username;
 
+  @NaturalId
   @Size(min = 11, max = 11)
   private String cpf;
 

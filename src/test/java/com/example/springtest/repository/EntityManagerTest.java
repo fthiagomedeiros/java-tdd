@@ -4,7 +4,9 @@ import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.extension.ParameterCustomerResolverExtension;
 import com.example.springtest.extension.ParameterCustomerResolverExtension.RandomCustomer;
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.persistence.EntityManager;
+import org.hibernate.Session;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +15,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 @DataJpaTest(properties = {
         "spring.test.database.replace = NONE",
@@ -26,7 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EntityManagerTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    private EntityManager entityManager;
+//    private TestEntityManager entityManager;
 
     @Test
     @Sql("/scripts/CREATE_CUSTOMER.sql")
@@ -38,10 +44,27 @@ public class EntityManagerTest {
     }
 
 
+    @DisplayName("My repeated test sample")
     @RepeatedTest(value = 10)
     public void testJUnitExtension(@RandomCustomer CustomerDTO customer) {
-        System.out.println(customer);
+        //Executes the test 10 times with the values provided by the RandomCustomer
         assertNotNull(customer);
+    }
+
+
+    @Test
+    @Sql("/scripts/CREATE_CUSTOMER.sql")
+    public void findSuccessfullyCustomersByCpfNaturalId() {
+        Session session = entityManager.unwrap(Session.class);
+        Optional<Customer> customer = session.bySimpleNaturalId(Customer.class)
+                .loadOptional("00000000002");
+
+        assertThat(customer.isPresent()).isTrue();
+        assertThat(customer.get().getFirstName())
+                .as("Customer loaded")
+                .isEqualTo("Alexandre");
+
+        assertThat(customer).isPresent();
     }
 
 }
