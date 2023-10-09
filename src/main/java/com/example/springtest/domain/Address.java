@@ -10,28 +10,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-@Table(name = "CUSTOMERS", schema = "customer_info")
+@Table(name = "CUSTOMER_ADDRESS", schema = "customer_info")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Customer {
+public class Address {
 
   @Id
   @JsonIgnore
@@ -39,17 +37,12 @@ public class Customer {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private String firstName;
-  private String lastName;
-  private String username;
+  private String street;
 
-  @NaturalId
-  @Size(min = 11, max = 11)
-  private String cpf;
-
-  private String fullName;
-
-  private LocalDateTime birth;
+  @ManyToOne
+  @MapsId
+  @JoinColumn(name = "id")
+  private Customer customer;
 
   @Override
   public String toString() {

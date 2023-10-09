@@ -1,5 +1,6 @@
 package com.example.springtest.extension;
 
+import com.example.springtest.mapper.AddressMapper;
 import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.services.CustomerServiceTest;
 import java.util.List;
@@ -14,5 +15,8 @@ public class MapStructsResolver implements BeforeEachCallback {
     List<Object> testInstances = context.getRequiredTestInstances().getAllInstances();
     ((CustomerServiceTest) testInstances.get(0))
         .setMapper(Mappers.getMapper(CustomerMapper.class));
+
+    ((CustomerServiceTest) testInstances.get(0))
+        .setAddressMapper(Mappers.getMapper(AddressMapper.class));
   }
 }
