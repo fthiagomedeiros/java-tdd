@@ -1,6 +1,5 @@
 package com.example.springtest.controllers;
 
-import com.example.springtest.config.CustomProperties;
 import com.example.springtest.domain.AddressDTO;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.exceptions.CpfExistsException;
@@ -44,12 +43,12 @@ public class CustomerController {
   }
 
   @PutMapping({"{id}"})
-  public ResponseEntity<CustomerDTO> updateCustomerAddress(@PathVariable UUID id,
-      @RequestBody AddressDTO addressDTO,
-      UriComponentsBuilder uriComponentsBuilder) {
+  public ResponseEntity<AddressDTO> updateCustomerAddress(@PathVariable UUID id,
+                                                       @RequestBody AddressDTO addressDTO,
+                                                       UriComponentsBuilder uriComponentsBuilder) {
     AddressDTO address = service.updateCustomerAddress(id, addressDTO);
-    return ResponseEntity.created(uriComponentsBuilder.path("/customer/{customerId}")
-        .build(address.getId())).build();
+    return ResponseEntity.created(uriComponentsBuilder.path("/address/{addressId}")
+        .build(address.getId())).body(address);
   }
 
   @GetMapping({"{id}"})

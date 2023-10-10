@@ -73,7 +73,7 @@ public class CustomerService {
 
     Address save = addressMapper.toAddress(addressDTO);
     save.setCustomer(c.get());
-    addressRepository.save(save);
+    save = addressRepository.save(save);
 
     return addressMapper.toAddressDto(save);
   }

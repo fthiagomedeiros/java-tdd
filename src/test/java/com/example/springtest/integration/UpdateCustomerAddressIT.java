@@ -1,5 +1,6 @@
 package com.example.springtest.integration;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -123,10 +124,15 @@ public class UpdateCustomerAddressIT {
             .build();
 
         //This is calling two endpoints
-        this.mockMvc.perform(put(CUSTOMER_URL + "/" + id)
+        MvcResult response = this.mockMvc.perform(put(CUSTOMER_URL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(addressDTO.toString()))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String customerCreatedId = Objects.requireNonNull(response.getResponse().getHeader("Location"))
+                .substring(25);
+        assertThat(customerCreatedId).contains(id.toString());
     }
 
 }
