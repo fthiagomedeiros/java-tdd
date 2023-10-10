@@ -18,6 +18,7 @@ SELECT original_title, vote_average, COUNT(*) AS counter FROM movies
 WHERE release_date > '2000-01-01'
 GROUP BY vote_average
 ORDER BY counter DESC LIMIT 3;
+
 ```
 
 - Which movie(s) were directed by Brenda Chapman?
