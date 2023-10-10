@@ -43,12 +43,9 @@ public class CustomerController {
   }
 
   @PutMapping({"{id}"})
-  public ResponseEntity<AddressDTO> updateCustomerAddress(@PathVariable UUID id,
-                                                       @RequestBody AddressDTO addressDTO,
-                                                       UriComponentsBuilder uriComponentsBuilder) {
+  public ResponseEntity<AddressDTO> updateCustomerAddress(@PathVariable UUID id, @RequestBody AddressDTO addressDTO) {
     AddressDTO address = service.updateCustomerAddress(id, addressDTO);
-    return ResponseEntity.created(uriComponentsBuilder.path("/address/{addressId}")
-        .build(address.getId())).body(address);
+    return ResponseEntity.ok(address);
   }
 
   @GetMapping({"{id}"})

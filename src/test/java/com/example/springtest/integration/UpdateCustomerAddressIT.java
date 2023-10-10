@@ -127,12 +127,8 @@ public class UpdateCustomerAddressIT {
         MvcResult response = this.mockMvc.perform(put(CUSTOMER_URL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(addressDTO.toString()))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn();
-
-        String customerCreatedId = Objects.requireNonNull(response.getResponse().getHeader("Location"))
-                .substring(25);
-        assertThat(customerCreatedId).contains(id.toString());
     }
 
 }
