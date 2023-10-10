@@ -1,22 +1,29 @@
 package com.example.springtest.integration;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.example.springtest.IntegrationTest;
-import com.example.springtest.controllers.CustomerController;
+import com.example.springtest.domain.AddressDTO;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.mapper.CustomerMapper;
 import com.example.springtest.repository.CustomerRepository;
-import jakarta.persistence.EntityManager;
-import java.util.List;
-import javax.sql.DataSource;
-import org.junit.jupiter.api.Assertions;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -26,23 +33,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @IntegrationTest
-public class CreateCustomerIT {
+public class UpdateCustomerAddressIT {
 
     private final String CUSTOMER_URL = "/customer";
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -111,7 +103,7 @@ public class CreateCustomerIT {
 
     @Test
     @Transactional
-    public void testCreateCustomerWithSameCpf() throws Exception {
+    public void testUpdateCustomerAddress() throws Exception {
         CustomerDTO body = CustomerDTO.builder()
                 .username("fmedeiros")
                 .firstName("Francisco")
@@ -125,85 +117,22 @@ public class CreateCustomerIT {
         customer = repository.save(customer);
         UUID id = customer.getId();
 
-        Customer customerWithCpf = repository.findByCpfOrUsername(body.getCpf(), body.getUsername());
+        CustomerDTO customerDto = mapper.mapToCustomerDTO(customer);
+
+        AddressDTO addressDTO = AddressDTO.builder()
+            .street("Av. da Liberdade, 25")
+            .build();
 
         //This is calling two endpoints
-        this.mockMvc.perform(post(CUSTOMER_URL)
+        MvcResult response = this.mockMvc.perform(put(CUSTOMER_URL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body.toString()))
-                .andExpect(status().isUnprocessableEntity());
-    }
+                        .content(addressDTO.toString()))
+                .andExpect(status().isCreated())
+                .andReturn();
 
-
-    @Test
-    @Transactional
-    public void testFetchCustomerSuccessfully() throws Exception {
-        CustomerDTO body = CustomerDTO.builder()
-                .username("fmedeiros")
-                .firstName("Francisco")
-                .lastName("Medeiros")
-                .cpf("99999999911")
-                .fullName("Francisco Medeiros da Silva")
-                .birth(LocalDateTime.parse("23/02/1985 10:22", FORMATTER))
-                .build();
-
-        Customer customer = mapper.mapToCustomer(body);
-        customer = repository.save(customer);
-        UUID id = customer.getId();
-
-        //This one was loaded just above
-        this.mockMvc.perform(get(CUSTOMER_URL + "/" + id))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("firstName").value("Francisco"))
-                .andExpect(jsonPath("username").value("fmedeiros"));
-    }
-
-    @Test
-    @Transactional
-    @Sql("/scripts/CREATE_CUSTOMER.sql")
-    public void testFetchAllCustomerSuccessfully() throws Exception {
-        this.mockMvc.perform(get(CUSTOMER_URL))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
-    }
-
-    @Test
-    public void testNotFoundCustomer() throws Exception {
-        UUID id = UUID.randomUUID();
-
-        //This one was loaded just above
-        this.mockMvc.perform(get(CUSTOMER_URL + "/" + id))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    @Sql("/scripts/CREATE_CUSTOMER.sql")
-    public void contextLoads() {
-        assertNotNull(context);
-        String[] definitions = context.getBeanDefinitionNames();
-        CustomerController customerController = (CustomerController) context.getBean("customerController");
-        CustomerRepository customerRepository = (CustomerRepository) context.getBean("customerRepository");
-        customerRepository.findAll();
-
-        DataSource dataSource = context.getBean(DataSource.class);
-        EntityManager manager = context.getBean(EntityManager.class);
-
-        List<?> q = manager.createQuery("SELECT c FROM Customer c")
-            .getResultList();
-
-        //2 items has been found.
-        Assertions.assertEquals(2, q.size());
-    }
-
-    @Test
-    @Transactional
-    @Sql("/scripts/CREATE_CUSTOMER.sql")
-    public void createCustomerAddressEntity() {
-
+        String customerCreatedId = Objects.requireNonNull(response.getResponse().getHeader("Location"))
+                .substring(25);
+        assertThat(customerCreatedId).contains(id.toString());
     }
 
 }

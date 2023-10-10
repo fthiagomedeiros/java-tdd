@@ -10,7 +10,9 @@ import static org.mockito.Mockito.when;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.extension.MapStructsResolver;
+import com.example.springtest.mapper.AddressMapper;
 import com.example.springtest.mapper.CustomerMapper;
+import com.example.springtest.repository.AddressRepository;
 import com.example.springtest.repository.CustomerRepository;
 
 import java.time.LocalDateTime;
@@ -33,7 +35,10 @@ public class CustomerServiceTest {
     @Mock
     private CustomerRepository repository;
 
+    private AddressRepository addressRepository;
+
     private CustomerMapper mapper;
+    private AddressMapper addressMapper;
 
     @InjectMocks
     private CustomerService cut;
@@ -43,7 +48,7 @@ public class CustomerServiceTest {
     @BeforeEach
     public void setUp() {
         //work around to inject the mapper a service dependencies
-        cut = new CustomerService(repository, mapper);
+        cut = new CustomerService(repository, addressRepository, mapper, addressMapper);
         customer = Customer.builder()
                 .id(UUID.randomUUID())
                 .firstName("Francisco")

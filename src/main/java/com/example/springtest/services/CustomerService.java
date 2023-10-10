@@ -1,10 +1,14 @@
 package com.example.springtest.services;
 
+import com.example.springtest.domain.Address;
+import com.example.springtest.domain.AddressDTO;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.exceptions.CpfExistsException;
 import com.example.springtest.exceptions.CustomerNotFoundException;
+import com.example.springtest.mapper.AddressMapper;
 import com.example.springtest.mapper.CustomerMapper;
+import com.example.springtest.repository.AddressRepository;
 import com.example.springtest.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +21,10 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
   private CustomerRepository repository;
+  private AddressRepository addressRepository;
 
   private CustomerMapper customerMapper;
+  private AddressMapper addressMapper;
 
   public List<CustomerDTO> getAllCustomers() {
     List<Customer> customers = repository.findAll();
@@ -56,5 +62,19 @@ public class CustomerService {
     }
 
     throw new CustomerNotFoundException();
+  }
+
+  public AddressDTO updateCustomerAddress(UUID id, AddressDTO addressDTO) {
+    Optional<Customer> c = repository.findById(id);
+
+    if (c.isEmpty()) {
+      throw new CustomerNotFoundException();
+    }
+
+    Address save = addressMapper.toAddress(addressDTO);
+    save.setCustomer(c.get());
+    save = addressRepository.save(save);
+
+    return addressMapper.toAddressDto(save);
   }
 }
