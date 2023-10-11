@@ -32,6 +32,7 @@ public class HealthController {
         .build();
 
     logger.info(status.toString());
+    logger.debug(String.format("%s Getting health DEBUG status", environment));
 
     return ResponseEntity
         .ok()

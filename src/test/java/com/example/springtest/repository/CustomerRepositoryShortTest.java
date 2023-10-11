@@ -1,6 +1,7 @@
 package com.example.springtest.repository;
 
 import com.example.springtest.domain.Customer;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -8,6 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest(properties = {
@@ -55,5 +57,25 @@ public class CustomerRepositoryShortTest {
     public void countCustomers() {
         long quantityCustomers = repository.count();
         assertEquals(2, quantityCustomers);
+    }
+
+
+    @Test
+    public void insertSuccessfullyCustomerById() {
+        //This test in not meaningful once we are testing the framework calling findById
+        //(already testes by the framework team)
+
+        Customer mCustomer = Customer.builder()
+            .birth(LocalDateTime.now())
+            .fullName("Joao Melo")
+            .firstName("Joao")
+            .lastName("Melo")
+            .cpf("0000000000001")
+            .username("joaomelo2023")
+            .build();
+
+        Customer customer = repository.save(mCustomer);
+
+        assertThat(customer).isNotNull();
     }
 }
