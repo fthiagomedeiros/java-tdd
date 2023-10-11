@@ -35,6 +35,7 @@ public class CustomerRepositoryTest extends PostgresContainer {
     public void checkContextLoadsSuccessfully() {
         assertNotNull(entityManager);
         assertNotNull(dataSource);
+        assertNotNull(repository);
     }
 
     @Test

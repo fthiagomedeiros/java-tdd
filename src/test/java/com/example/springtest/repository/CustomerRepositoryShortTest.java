@@ -12,7 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest(properties = {
         "spring.test.database.replace = NONE",
-        "spring.datasource.url = jdbc:tc:postgresql:15.3-alpine3.18:///springboot:customer_info"
+        "spring.datasource.url = jdbc:tc:postgresql:15.3-alpine3.18:///springboot:customer_info"//,
+        //"spring.flyway.enabled=false", disable Flyway
+        //"spring.jpa.hibernate.ddl-auto=create-drop" Hibernate create ORM
 }
 )
 public class CustomerRepositoryShortTest {
