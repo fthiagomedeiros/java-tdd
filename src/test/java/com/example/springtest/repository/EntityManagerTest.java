@@ -5,6 +5,7 @@ import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.extension.ParameterCustomerResolverExtension;
 import com.example.springtest.extension.ParameterCustomerResolverExtension.RandomCustomer;
 import jakarta.persistence.EntityManager;
+import java.time.LocalDateTime;
 import org.hibernate.Session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
@@ -32,7 +33,12 @@ public class EntityManagerTest {
 
     @Autowired
     private EntityManager entityManager;
-//    private TestEntityManager entityManager;
+
+    @Autowired
+    private CustomerRepository repository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @Test
     @Sql("/scripts/CREATE_CUSTOMER.sql")
@@ -67,4 +73,21 @@ public class EntityManagerTest {
         assertThat(customer).isPresent();
     }
 
+    @Test
+    public void testEntityManagerCreateCustomer() {
+
+        Customer entity = Customer.builder()
+            .username("fmedeiros")
+            .firstName("Francisco")
+            .lastName("Medeiros")
+            .cpf("99999999911")
+            .fullName("Francisco Medeiros da Silva")
+            .birth(LocalDateTime.now())
+            .build();
+
+        Customer customer = repository.save(entity);
+
+        assertThat(customer).isNotNull();
+        assertNotNull(customer.getId());
+    }
 }

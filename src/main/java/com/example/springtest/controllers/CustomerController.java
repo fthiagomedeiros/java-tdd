@@ -7,6 +7,8 @@ import com.example.springtest.exceptions.CustomerNotFoundException;
 import com.example.springtest.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +28,13 @@ import java.util.UUID;
 @RequestMapping("/customer")
 public class CustomerController {
 
+  private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+
   private final CustomerService service;
 
   @GetMapping
   public ResponseEntity<List<CustomerDTO>> fetchAllCustomers() {
+    logger.info("fetching all customers");
     List<CustomerDTO> customers = service.getAllCustomers();
     return ResponseEntity.ok().body(customers);
   }
@@ -38,13 +43,16 @@ public class CustomerController {
   public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO mCustomer,
       UriComponentsBuilder uriComponentsBuilder) throws CpfExistsException {
     CustomerDTO customer = service.createCustomer(mCustomer);
+    logger.info(String.format("createCustomer %s", customer.getId()));
     return ResponseEntity.created(uriComponentsBuilder.path("/customer/{customerId}")
         .build(customer.getId())).build();
   }
 
   @PutMapping({"{id}"})
-  public ResponseEntity<AddressDTO> updateCustomerAddress(@PathVariable UUID id, @RequestBody AddressDTO addressDTO) {
+  public ResponseEntity<AddressDTO> updateCustomerAddress(@PathVariable UUID id,
+      @RequestBody AddressDTO addressDTO) {
     AddressDTO address = service.updateCustomerAddress(id, addressDTO);
+    logger.info(String.format("updating the address for customer %s", address.getId()));
     return ResponseEntity.ok(address);
   }
 

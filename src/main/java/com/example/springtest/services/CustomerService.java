@@ -14,11 +14,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class CustomerService {
+  private final Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
   private CustomerRepository repository;
   private AddressRepository addressRepository;
@@ -41,6 +44,8 @@ public class CustomerService {
     }
 
     Customer saved = repository.saveAndFlush(customer);
+
+    logger.info(String.format("created a customer %s", saved.getId()));
     return customerMapper.mapToCustomerDTO(saved);
   }
 
