@@ -2,6 +2,7 @@ package com.example.springtest.integration;
 
 import com.example.springtest.IntegrationTest;
 import com.example.springtest.controllers.CustomerController;
+import com.example.springtest.domain.AddressDTO;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import com.example.springtest.mapper.CustomerMapper;
@@ -91,6 +92,9 @@ public class CreateCustomerIT {
                 .cpf("00011122233")
                 .fullName("John Doe da Silva")
                 .birth(LocalDateTime.parse("23/02/1985 10:00", FORMATTER))
+                .addressDTO(AddressDTO.builder()
+                    .street("Rua dos Camares, 999 Vila Olimpia Sao Paulo - SP")
+                    .build())
                 .build();
 
         //This is calling two endpoints

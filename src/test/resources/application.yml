@@ -10,8 +10,6 @@ spring:
     generate-ddl: true
 
     hibernate:
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
       ddl-auto: validate
 
     properties:

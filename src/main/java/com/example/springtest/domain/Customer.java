@@ -5,6 +5,7 @@ import com.example.springtest.json.adapter.LocalDateTimeDeserializer;
 import com.example.springtest.json.adapter.LocalDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.GsonBuilder;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,6 +51,10 @@ public class Customer {
   private String fullName;
 
   private LocalDateTime birth;
+
+  @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+  @PrimaryKeyJoinColumn
+  private Address address;
 
   @Override
   public String toString() {

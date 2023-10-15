@@ -38,6 +38,8 @@ public class CustomerDTO {
 
   private String fullName;
 
+  private AddressDTO addressDTO;
+
   /**
    * using this annotation JsonFormat we inform the format of the LocalDateTime passed as parameter
    * It means the first payload would be accepted, but the second one wouldn't
