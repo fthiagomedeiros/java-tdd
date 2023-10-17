@@ -5,6 +5,7 @@ import com.example.springtest.domain.AddressDTO;
 import com.example.springtest.domain.Customer;
 import com.example.springtest.domain.CustomerDTO;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Builder;
@@ -25,6 +26,8 @@ public interface CustomerMapper {
 
   @AfterMapping
   default void setCustomerAddressBidirectionalRelation(@MappingTarget Customer customer) {
-    customer.getAddress().setCustomer(customer);
+    if (!Objects.isNull(customer.getAddress())) {
+      customer.getAddress().setCustomer(customer);
+    }
   }
 }

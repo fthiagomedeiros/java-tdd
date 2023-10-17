@@ -62,13 +62,15 @@ public class EntityManagerTest {
     @Sql("/scripts/CREATE_CUSTOMER.sql")
     public void findSuccessfullyCustomersByCpfNaturalId() {
         Session session = entityManager.unwrap(Session.class);
-        Optional<Customer> customer = session.bySimpleNaturalId(Customer.class)
-                .loadOptional("00000000002");
+        Optional<Customer> customer = Optional.ofNullable(
+            session.get(Customer.class, UUID.fromString("5801fc28-716e-4619-9814-4ef74c7c8899")));
 
         assertThat(customer.isPresent()).isTrue();
         assertThat(customer.get().getFirstName())
                 .as("Customer loaded")
                 .isEqualTo("Alexandre");
+
+        assertThat(customer.get().getAddress().getStreet()).isEqualTo("Rua do Alexandre");
 
         assertThat(customer).isPresent();
     }
