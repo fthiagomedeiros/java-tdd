@@ -47,12 +47,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TestCustomerControllerSecurity {
 
   private static final String CUSTOMER_URL = "/customer";
+  public static final String CUSTOMER_ID = "/customer/{id}";
+
   private static final String RESOURCE_ID = "/3";
   private static final String USERNAME = "USERNAME";
   private static final String ROLE_ADMIN = "ADMIN";
   private static final String ROLE_USER = "USER";
   private static final String USER = "user";
   private static final String PASS = "password";
+
 
   @Autowired
   protected ObjectMapper objectMapper;
@@ -231,7 +234,7 @@ public class TestCustomerControllerSecurity {
             .build()
     );
 
-    this.mockMvc.perform(get(CUSTOMER_URL + "/" + id)
+    this.mockMvc.perform(get(CUSTOMER_ID, id)
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
@@ -245,7 +248,7 @@ public class TestCustomerControllerSecurity {
 
   @Test
   public void shouldFNotFetchCustomerByIdUnauthenticatedUser() throws Exception {
-    this.mockMvc.perform(get(CUSTOMER_URL + "/" + UUID.randomUUID())
+    this.mockMvc.perform(get(CUSTOMER_ID, UUID.randomUUID())
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk());
