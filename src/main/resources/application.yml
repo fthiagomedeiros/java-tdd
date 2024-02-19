@@ -2,7 +2,7 @@ spring:
   datasource:
     username: springboot
     password: springboot
-    url: jdbc:postgresql://localhost:5432/customer_info
+    url: jdbc:postgresql://localhost:5432/customer_info2
 
   jpa:
     show-sql: true
